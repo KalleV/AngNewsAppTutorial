@@ -1,0 +1,1 @@
+The app is from an AngularJS tutorial at https://thinkster.io/angulartutorial/learn-to-build-realtime-webapps/.
