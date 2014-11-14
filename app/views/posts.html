@@ -1,0 +1,14 @@
+<div ng-controller="PostsCtrl as postsCtrl">
+
+  <div ng-repeat="post in postsCtrl.posts">
+    <a ng-href="{{post.url}}">{{post.title}}</a>
+    <a ng-click="postsCtrl.deletePost($index)">delete</a>
+  </div>
+
+  <form ng-submit="postsCtrl.submitPost()">
+    <input type="text" ng-model="postsCtrl.post.title"/>
+    <input type="text" ng-model="postsCtrl.post.url"/>
+    <input type="submit" value="Add Post"/>
+  </form>
+
+</div>
