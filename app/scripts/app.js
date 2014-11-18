@@ -17,7 +17,8 @@ var app = angular.module('angNewsApp', [
     'ngResource',
     'ngRoute',
     'ngSanitize',
-    'ngTouch'
+    'ngTouch',
+    'firebase'
   ])
   .config(function($routeProvider) {
     $routeProvider
@@ -29,8 +30,23 @@ var app = angular.module('angNewsApp', [
         templateUrl: 'views/showpost.html',
         controller: 'PostViewCtrl'
       })
+      .when('/register', {
+        templateUrl: 'views/register.html',
+        controller: 'AuthCtrl',
+        resolve: {
+          user: function(Auth) {
+
+            console.log('Route Provider Auth current user',
+                        Auth.currentUser(),
+                        Auth.user
+            );
+
+            return Auth.currentUser();
+          }
+        }
+      })
       .otherwise({
         redirectTo: '/'
       });
   })
-  .constant('FIREBASE_URL', 'https://radiant-fire-943.firebaseio.com/posts/:id.json');
+  .constant('FIREBASE_URL', 'https://radiant-fire-943.firebaseio.com/');

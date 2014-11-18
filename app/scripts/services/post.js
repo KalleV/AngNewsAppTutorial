@@ -1,6 +1,20 @@
 // https://radiant-fire-943.firebaseio.com/
 'use strict';
 
-app.factory('Post', function Post(FIREBASE_URL, $resource) {
-  return $resource(FIREBASE_URL);
+app.factory('Post', function Post($firebase, FIREBASE_URL) {
+  var ref = new Firebase(FIREBASE_URL);
+  var posts = $firebase(ref.child('posts')).$asArray();
+
+  return {
+    all: posts,
+    create: function(post) {
+      return posts.$add(post);
+    },
+    get: function(postId) {
+      return $firebase(ref.child('posts').child(postId)).$asObject();
+    },
+    delete: function(post) {
+      return posts.$remove(post);
+    }
+  };
 });
