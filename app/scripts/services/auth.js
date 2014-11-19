@@ -2,7 +2,7 @@
 
 app.factory('Auth', function($firebaseAuth, FIREBASE_URL, $rootScope) {
   var ref = new Firebase(FIREBASE_URL);
-  var auth = $firebaseAuth(ref);  // The new way to sign in
+  var auth = $firebaseAuth(ref);
 
   var Auth = {
     register: function(user) {
