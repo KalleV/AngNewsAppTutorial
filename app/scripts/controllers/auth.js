@@ -9,16 +9,45 @@ app.controller('AuthCtrl', function($scope, $location, Auth, user) {
 
   $scope.user = user;  // Give the view access to the user object
 
-  $scope.register = function() {
-    console.log('Inside AuthCtrl', user, $scope.user);
-    Auth.register(user).then(function () {
-      console.log('user created successfully!');
-      return Auth.login(user);
-    }).then(function (authData) {
-      console.log('Logged in as:', authData.uid);
+  $scope.login = function() {
+    Auth.login($scope.user).then(function() {
       $location.path('/');
+    }).catch(function(error) {
+      $scope.error = error.toString();
+    });
+  };
+
+  // TODO: errors from Firebase.authWithPassword are not being caught
+  // - catch them in the service?
+  $scope.register = function() {
+    console.log('Inside AuthCtrl', $scope.user);
+    Auth.register($scope.user).then(function () {
+      console.log('user created successfully!');
+      return Auth.login($scope.user).then(function(authData) {
+        console.log('Logged in as:', authData.uid);
+        $location.path('/');
+      }).catch(function(error) {
+        $scope.error = error.toString();
+        console.log('Error:', error);
+      });
     }).catch(function (error) {
+      $scope.error = error.toString();
       console.log('Error:', error);
     });
   };
+
+  //$scope.register = function() {
+  //  console.log('Inside AuthCtrl', $scope.user);
+  //  Auth.register($scope.user).then(function () {
+  //    console.log('user created successfully!');
+  //    return Auth.login($scope.user);
+  //  }).then(function (authData) {
+  //    console.log('Logged in as:', authData.uid);
+  //    $location.path('/');
+  //  }).catch(function (error) {
+  //    $scope.error = error.toString();
+  //    console.log('Error:', error);
+  //  });
+  //};
+
 });

@@ -10,6 +10,7 @@ app.factory('Auth', function($firebaseAuth, FIREBASE_URL, $rootScope) {
       return auth.$createUser(user.email, user.password);
     },
     login: function(user) {
+      console.log('Login', user);
       return auth.$authWithPassword(user);
     },
     logout: function() {
