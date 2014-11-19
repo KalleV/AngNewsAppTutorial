@@ -7,7 +7,7 @@ app.controller('AuthCtrl', function($scope, $location, Auth, user) {
   }
 
   user = {
-    email: 'emaillll@example.com',
+    email: 'eemaaillll@example.com',
     password: '123'
   };
 
