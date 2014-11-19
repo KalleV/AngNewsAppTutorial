@@ -33,12 +33,11 @@ var app = angular.module('angNewsApp', [
       .when('/register', {
         templateUrl: 'views/register.html',
         controller: 'AuthCtrl',
-        resolve: {
+        resolve: {  // injects the currently signed in user to the controller
           user: function(Auth) {
 
             console.log('Route Provider Auth current user',
-                        Auth.currentUser(),
-                        Auth.user
+                        Auth.currentUser()
             );
 
             return Auth.currentUser();

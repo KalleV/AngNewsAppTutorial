@@ -16,15 +16,10 @@ app.factory('Auth', function($firebaseAuth, FIREBASE_URL, $rootScope) {
       auth.$unauth();
     },
     currentUser: function() {
-      var user = auth.$getAuth();
-      if (!user) {
-        return {};
-      }
-      return user;
-//      return auth.$getAuth();
+      return this.user;
     },
     signedIn: function() {
-      return auth.$getAuth();// !== null;
+      return auth.$getAuth();
     },
     user: {}
   };
