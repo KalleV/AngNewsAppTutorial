@@ -13,27 +13,15 @@ app.controller('AuthCtrl', function($scope, $location, Auth, user) {
 
   $scope.register = function() {
     console.log('Inside AuthCtrl', user);
-    Auth.register(user).then(function(err) {
-      if (err) {
-        switch (err.code) {
-          case 'EMAIL_TAKEN':
-            console.log('Email already in use');
-            break;
-          case 'INVALID_EMAIL':
-            console.log('Invalid email');
-            break;
-          default:
-            console.log('Error did not match an error code');
-            break;
-        }
-      }
-      Auth.login(user);
-    }).then(function(authData) {
+    Auth.register(user).then(function () {
+      console.log('user created successfully!');
+
+      return Auth.login(user);
+    }).then(function (authData) {
       console.log('Logged in as:', authData.uid);
       $location.path('/');
-    }).catch(function(error) {
-      console.log('Error', error);
+    }).catch(function (error) {
+      console.log('Error:', error);
     });
   };
-
 });
