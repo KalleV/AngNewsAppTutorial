@@ -23,6 +23,9 @@
       <li ng-show="navCtrl.signedIn()">
         <a ng-href="#" ng-click="navCtrl.logout()">Logout</a>
       </li>
+      <li ng-show="!navCtrl.signedIn()">
+        <a ng-href="#" ng-click="navCtrl.register()">Register</a>
+      </li>
     </ul>
   </div>
 </nav>

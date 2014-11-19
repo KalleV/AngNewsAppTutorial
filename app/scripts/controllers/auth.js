@@ -2,14 +2,20 @@
 
 // Injector cannot find the location of the 'user' dependency
 app.controller('AuthCtrl', function($scope, $location, Auth, user) {
-  if (user) {
+//  if (user) {
+  if (Auth.signedIn()) {
+    console.log('AuthCtrl Current User:', user);
     $location.path('/');
   }
 
-  user = {
-    email: 'eemaaillll@example.com',
-    password: '123'
+  $scope.user = {
+    email: '',
+    password: ''
   };
+  //user = {
+  //  email: 'eemaaillll@example.com',
+  //  password: '123'
+  //};
 
   $scope.register = function() {
     console.log('Inside AuthCtrl', user);
