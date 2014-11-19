@@ -1,21 +1,16 @@
 'use strict';
 
-app.factory('Auth', function($firebaseSimpleLogin, FIREBASE_URL, $rootScope) {
+app.factory('Auth', function($firebaseAuth, FIREBASE_URL, $rootScope) {
   var ref = new Firebase(FIREBASE_URL);
-  var auth = $firebaseSimpleLogin(ref);
-  //var auth = $firebaseAuth(ref);  // The new way to sign in
+  var auth = $firebaseAuth(ref);  // The new way to sign in
 
   var Auth = {
     register: function(user) {
       console.log('inside Register:', user);
-      // Use the new code defined here:
-      // https://www.firebase.com/docs/web/libraries/angular/api.html#createuser-email-password-nologin
       return auth.$createUser(user.email, user.password);
     },
     login: function(user) {
       auth.$authWithPassword(user);
-//      auth.$authWithPassword(user.email, user.password);
-      //return auth.$login('password', user);
     },
     logout: function() {
       auth.$logout();
@@ -29,7 +24,7 @@ app.factory('Auth', function($firebaseSimpleLogin, FIREBASE_URL, $rootScope) {
       //}, function() {
       //  console.log('error in signedIn');
       //});
-      return !!Auth.user.provider;  // Error?
+      return !!Auth.user.provider;
     },
     user: {}
   };

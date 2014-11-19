@@ -19,7 +19,7 @@ var app = angular.module('angNewsApp', [
     'ngSanitize',
     'ngTouch',
     'firebase'
-  ])
+])
   .config(function($routeProvider) {
     $routeProvider
       .when('/', {
