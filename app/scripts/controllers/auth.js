@@ -5,14 +5,10 @@ app.controller('AuthCtrl', function($scope, $location, Auth, user) {
   if (user) {
     $location.path('/');
   }
-  //else {
-  //  user = {};
-  //}
 
-  //this.register = function() {
   user = {
-    email: "emaillll@example.com",
-    password: "123"
+    email: 'emaillll@example.com',
+    password: '123'
   };
 
   $scope.register = function() {
@@ -39,21 +35,5 @@ app.controller('AuthCtrl', function($scope, $location, Auth, user) {
       console.log('Error', error);
     });
   };
-
-  //$scope.register = function() {
-  //  console.log('Inside AuthCtrl', user);
-  //  Auth.register(user).then(function (authUser) {
-  //    console.log('authUser:', authUser);
-  //    Auth.login(user);
-  //    $location.path('/');
-  //  });
-  //};
-
-  //Auth.register(user).then(function() {
-  //  console.log('Inside AuthCtrl (after registering)', user);
-  //  return Auth.login(user).then(function() {
-  //    $location.path('/');
-  //  });
-  //});
 
 });
