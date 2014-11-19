@@ -16,6 +16,6 @@ app.controller('NavCtrl', function($location, Post, Auth) {
 
   this.register = function () {
     $location.path('/register');
-  }
+  };
 
 });
