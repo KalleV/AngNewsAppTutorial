@@ -6,6 +6,7 @@ app.factory('Auth', function($firebaseAuth, FIREBASE_URL, $rootScope) {
 
   var Auth = {
     register: function(user) {
+      console.log('Register', user);
       return auth.$createUser(user.email, user.password);
     },
     login: function(user) {
@@ -15,7 +16,12 @@ app.factory('Auth', function($firebaseAuth, FIREBASE_URL, $rootScope) {
       auth.$unauth();
     },
     currentUser: function() {
-      return auth.$getAuth();
+      var user = auth.$getAuth();
+      if (!user) {
+        return {};
+      }
+      return user;
+//      return auth.$getAuth();
     },
     signedIn: function() {
       return auth.$getAuth();// !== null;
