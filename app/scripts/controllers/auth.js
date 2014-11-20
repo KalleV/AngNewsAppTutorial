@@ -1,6 +1,5 @@
 'use strict';
 
-// Injector cannot find the location of the 'user' dependency
 app.controller('AuthCtrl', function($scope, $location, Auth, user) {
   if (Auth.signedIn()) {
     console.log('AuthCtrl Current User:', user);
@@ -23,7 +22,8 @@ app.controller('AuthCtrl', function($scope, $location, Auth, user) {
     console.log('Inside AuthCtrl', $scope.user);
     Auth.register($scope.user).then(function () {
       console.log('user created successfully!');
-      return Auth.login($scope.user).then(function(authData) {
+      //return
+      Auth.login($scope.user).then(function(authData) {
         console.log('Logged in as:', authData.uid);
         $location.path('/');
       }).catch(function(error) {
