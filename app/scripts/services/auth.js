@@ -22,7 +22,7 @@ app.factory('Auth', function($firebaseAuth, FIREBASE_URL, $rootScope) {
     signedIn: function() {
       return auth.$getAuth();
     },
-    user: {}
+    user: {email: '', password: ''}
   };
 
   $rootScope.$on('$firebaseAuth:login', function(event, user) {
