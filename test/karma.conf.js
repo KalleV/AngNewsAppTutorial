@@ -27,7 +27,7 @@ module.exports = function(config) {
       'bower_components/angular-sanitize/angular-sanitize.js',
       'bower_components/angular-touch/angular-touch.js',
       'app/scripts/**/*.js',
-      'test/mock/**/*.js',
+      'test/unit/**/*.js',
       'test/spec/**/*.js'
     ],
 
@@ -46,11 +46,14 @@ module.exports = function(config) {
     // - PhantomJS
     // - IE (only Windows)
     browsers: [
-      'PhantomJS'
+      'Chrome'
     ],
 
     // Which plugins to enable
     plugins: [
+      'karma-junit-reporter',
+      'karma-chrome-launcher',
+      'karma-firefox-launcher',
       'karma-phantomjs-launcher',
       'karma-jasmine'
     ],
@@ -65,6 +68,10 @@ module.exports = function(config) {
     // possible values: LOG_DISABLE || LOG_ERROR || LOG_WARN || LOG_INFO || LOG_DEBUG
     logLevel: config.LOG_INFO,
 
+    junitReporter : {
+      outputFile: 'test_out/unit.xml',
+      suite: 'unit'
+    }
     // Uncomment the following lines if you are using grunt's server to run the tests
     // proxies: {
     //   '/': 'http://localhost:9000/'
