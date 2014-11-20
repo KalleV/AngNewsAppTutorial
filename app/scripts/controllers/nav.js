@@ -1,21 +1,25 @@
-'use strict';
+(function() {
 
-app.controller('NavCtrl', function($location, Post, Auth) {
-  var vm = this;
+  'use strict';
 
-  this.signedIn = Auth.signedIn;
-  this.logout = Auth.logout;
-  this.post = {url: 'http://', title: ''};
+  app.controller('NavCtrl', function ($location, Post, Auth) {
+    var vm = this;
 
-  this.submitPost = function() {
-    Post.create(vm.post).then(function(ref) {
-      $location.path('/posts/' + ref.name());
-      vm.post = {url: 'http://', 'title': ''};
-    });
-  };
+    this.signedIn = Auth.signedIn;
+    this.logout = Auth.logout;
+    this.post = {url: 'http://', title: ''};
 
-  this.register = function () {
-    $location.path('/register');
-  };
+    this.submitPost = function () {
+      Post.create(vm.post).then(function (ref) {
+        $location.path('/posts/' + ref.name());
+        vm.post = {url: 'http://', 'title': ''};
+      });
+    };
 
-});
+    this.register = function () {
+      $location.path('/register');
+    };
+
+  });
+
+})();
