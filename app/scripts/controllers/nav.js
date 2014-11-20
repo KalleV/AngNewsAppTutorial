@@ -13,4 +13,9 @@ app.controller('NavCtrl', function($location, Post, Auth) {
       vm.post = {url: 'http://', 'title': ''};
     });
   };
+
+  this.register = function () {
+    $location.path('/register');
+  };
+
 });

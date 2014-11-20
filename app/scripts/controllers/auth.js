@@ -2,62 +2,52 @@
 
 // Injector cannot find the location of the 'user' dependency
 app.controller('AuthCtrl', function($scope, $location, Auth, user) {
-  if (user) {
+  if (Auth.signedIn()) {
+    console.log('AuthCtrl Current User:', user);
     $location.path('/');
   }
-  //else {
-  //  user = {};
-  //}
 
-  //this.register = function() {
-  user = {
-    email: "emmanbaaiiiillll@example.com",
-    password: "123"
+  $scope.user = user;  // Give the view access to the user object
+
+  $scope.login = function() {
+    Auth.login($scope.user).then(function() {
+      $location.path('/');
+    }).catch(function(error) {
+      $scope.error = error.toString();
+    });
   };
 
+  // TODO: errors from Firebase.authWithPassword are not being caught
+  // - catch them in the service?
   $scope.register = function() {
-    console.log('Inside AuthCtrl', user);
-    Auth.register(user).then(function(user) {//err, user) {
-      //console.log('The Error Message:', err);
-      //if (err) {
-      //  switch (err.code) {
-      //    case 'EMAIL_TAKEN':
-      //      console.log('Email already in use');
-      //      break;
-      //    case 'INVALID_EMAIL':
-      //      console.log('Invalid email');
-      //      break;
-      //    default:
-      //      console.log('Error did not match an error code');
-      //      break;
-      //  }
-      //}
-      return Auth.login(user).then(function() {
+    console.log('Inside AuthCtrl', $scope.user);
+    Auth.register($scope.user).then(function () {
+      console.log('user created successfully!');
+      return Auth.login($scope.user).then(function(authData) {
+        console.log('Logged in as:', authData.uid);
         $location.path('/');
+      }).catch(function(error) {
+        $scope.error = error.toString();
+        console.log('Error:', error);
       });
+    }).catch(function (error) {
+      $scope.error = error.toString();
+      console.log('Error:', error);
     });
-    //  .then(function(authData) {
-    //  console.log('Logged in as:', authData.uid);
-    //  $location.path('/');
-    //}).catch(function(error) {
-    //  console.log('Error', error);
-    //});
   };
 
   //$scope.register = function() {
-  //  console.log('Inside AuthCtrl', user);
-  //  Auth.register(user).then(function (authUser) {
-  //    console.log('authUser:', authUser);
-  //    Auth.login(user);
+  //  console.log('Inside AuthCtrl', $scope.user);
+  //  Auth.register($scope.user).then(function () {
+  //    console.log('user created successfully!');
+  //    return Auth.login($scope.user);
+  //  }).then(function (authData) {
+  //    console.log('Logged in as:', authData.uid);
   //    $location.path('/');
+  //  }).catch(function (error) {
+  //    $scope.error = error.toString();
+  //    console.log('Error:', error);
   //  });
   //};
-
-  //Auth.register(user).then(function() {
-  //  console.log('Inside AuthCtrl (after registering)', user);
-  //  return Auth.login(user).then(function() {
-  //    $location.path('/');
-  //  });
-  //});
 
 });
