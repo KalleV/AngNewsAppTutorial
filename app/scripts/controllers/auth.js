@@ -1,53 +1,41 @@
-'use strict';
+(function(){
 
-// Injector cannot find the location of the 'user' dependency
-app.controller('AuthCtrl', function($scope, $location, Auth, user) {
-  if (Auth.signedIn()) {
-    console.log('AuthCtrl Current User:', user);
-    $location.path('/');
+  'use strict';
+
+  function AuthCtrl($location, Auth, user) {
+    this.user = user;
+    this.auth = Auth;
+    this.$location = $location;
+    this.rootPath = '/';
+    if (this.auth.signedIn()) {
+      $location.path(this.rootPath);
+    }
   }
 
-  $scope.user = user;  // Give the view access to the user object
-
-  $scope.login = function() {
-    Auth.login($scope.user).then(function() {
-      $location.path('/');
-    }).catch(function(error) {
-      $scope.error = error.toString();
+  AuthCtrl.prototype.login = function () {
+    var self = this;
+    this.auth.login(this.user).then(function () {
+      self.$location.path(self.rootPath);
+    }).catch(function (error) {
+      self.error = error.toString();
     });
   };
 
-  // TODO: errors from Firebase.authWithPassword are not being caught
-  // - catch them in the service?
-  $scope.register = function() {
-    console.log('Inside AuthCtrl', $scope.user);
-    Auth.register($scope.user).then(function () {
+  AuthCtrl.prototype.register = function () {
+    var self = this;
+    this.auth.register(this.user).then(function () {
       console.log('user created successfully!');
-      return Auth.login($scope.user).then(function(authData) {
+      return self.auth.login(self.user).then(function (authData) {
         console.log('Logged in as:', authData.uid);
-        $location.path('/');
-      }).catch(function(error) {
-        $scope.error = error.toString();
-        console.log('Error:', error);
+        self.$location.path(self.rootPath);
+      }).catch(function (error) {
+        self.error = error.toString();
       });
     }).catch(function (error) {
-      $scope.error = error.toString();
-      console.log('Error:', error);
+      self.error = error.toString();
     });
   };
 
-  //$scope.register = function() {
-  //  console.log('Inside AuthCtrl', $scope.user);
-  //  Auth.register($scope.user).then(function () {
-  //    console.log('user created successfully!');
-  //    return Auth.login($scope.user);
-  //  }).then(function (authData) {
-  //    console.log('Logged in as:', authData.uid);
-  //    $location.path('/');
-  //  }).catch(function (error) {
-  //    $scope.error = error.toString();
-  //    console.log('Error:', error);
-  //  });
-  //};
+  app.controller('AuthCtrl', AuthCtrl);
 
-});
+})();

@@ -32,6 +32,7 @@ var app = angular.module('angNewsApp', [
       })
       .when('/login', {
         templateUrl: 'views/login.html',
+        controllerAs: 'authCtrl',
         controller: 'AuthCtrl',
         resolve: {
           user: function(Auth) {
@@ -41,6 +42,7 @@ var app = angular.module('angNewsApp', [
       })
       .when('/register', {
         templateUrl: 'views/register.html',
+        controllerAs: 'authCtrl',
         controller: 'AuthCtrl',
         resolve: {  // injects the currently signed in user to the controller
           user: function(Auth) {
