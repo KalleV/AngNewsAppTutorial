@@ -29,6 +29,10 @@ module.exports = function (grunt) {
 
     // Watches files for changes and runs tasks based on the changed files
     watch: {
+      karma: {
+        files: ['scripts/**/*.js', 'test/unit/*.js', 'test/spec/**/*.js'],
+        tasks: ['karma:unit:run']
+      },
       bower: {
         files: ['bower.json'],
         tasks: ['wiredep']
@@ -349,11 +353,13 @@ module.exports = function (grunt) {
     karma: {
       unit: {
         configFile: 'test/karma.conf.js',
-        singleRun: true
+        background: true
       }
     }
   });
 
+  grunt.loadNpmTasks('grunt-contrib-watch');
+  grunt.loadNpmTasks('grunt-karma');
 
   grunt.registerTask('serve', 'Compile then start a connect web server', function (target) {
     if (target === 'dist') {
@@ -366,7 +372,7 @@ module.exports = function (grunt) {
       'concurrent:server',
       'autoprefixer',
       'connect:livereload',
-      'watch'
+      'watch',
     ]);
   });
 
@@ -404,5 +410,10 @@ module.exports = function (grunt) {
     'newer:jshint',
     'test',
     'build'
+  ]);
+
+  grunt.registerTask('devmode', [
+    'karma:unit',
+    'watch'
   ]);
 };
