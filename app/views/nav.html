@@ -21,7 +21,13 @@
     </form>
     <ul class="nav navbar-nav navbar-right">
       <li ng-show="navCtrl.signedIn()">
-        <a ng-href="#" ng-click="navCtrl.logout()">Logout</a>
+        <a ng-click="navCtrl.logout()">Logout</a>
+      </li>
+      <li ng-hide="navCtrl.signedIn()">
+        <a ng-href="#/login">Login</a>
+      </li>
+      <li ng-hide="navCtrl.signedIn()">
+        <a ng-href="#/register">Register</a>
       </li>
     </ul>
   </div>

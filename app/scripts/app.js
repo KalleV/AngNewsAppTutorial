@@ -19,7 +19,7 @@ var app = angular.module('angNewsApp', [
     'ngSanitize',
     'ngTouch',
     'firebase'
-  ])
+])
   .config(function($routeProvider) {
     $routeProvider
       .when('/', {
@@ -30,15 +30,23 @@ var app = angular.module('angNewsApp', [
         templateUrl: 'views/showpost.html',
         controller: 'PostViewCtrl'
       })
-      .when('/register', {
-        templateUrl: 'views/register.html',
+      .when('/login', {
+        templateUrl: 'views/login.html',
         controller: 'AuthCtrl',
         resolve: {
           user: function(Auth) {
+            return Auth.currentUser();
+          }
+        }
+      })
+      .when('/register', {
+        templateUrl: 'views/register.html',
+        controller: 'AuthCtrl',
+        resolve: {  // injects the currently signed in user to the controller
+          user: function(Auth) {
 
             console.log('Route Provider Auth current user',
-                        Auth.currentUser(),
-                        Auth.user
+                        Auth.currentUser()
             );
 
             return Auth.currentUser();
