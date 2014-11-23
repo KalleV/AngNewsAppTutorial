@@ -12,10 +12,7 @@
         this.signedIn = Auth.signedIn;
         this.logout = Auth.logout;
         this.post = {url: 'http://', title: ''};
-        this.user = Auth.user;  // TODO: user name is not visible in the view
-
-        console.log('NavCtrl user', this.user); // DEBUG
-        console.log(this.signedIn());           // DEBUG
+        this.user = Auth.user;
 
         this.submitPost = function () {
           Post.create(vm.post).then(function (ref) {

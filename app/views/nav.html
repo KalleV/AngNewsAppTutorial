@@ -21,7 +21,7 @@
     </form>
     <ul class="nav navbar-nav navbar-right">
       <li ng-show="navCtrl.signedIn()">
-        <p class="navbar-text">Name: {{navctrl.user}}</p>
+        <p class="navbar-text">{{navCtrl.user.profile.username}}</p>
       </li>
       <li ng-show="navCtrl.signedIn()">
         <a ng-click="navCtrl.logout()">Logout</a>

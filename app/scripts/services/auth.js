@@ -20,7 +20,6 @@
         return profileRef.$set(user.uid, profile);
       },
       login: function(user) {
-        console.log('Login', user);  // DBEUG
         return auth.$authWithPassword(user);
       },
       logout: function() {
@@ -49,6 +48,7 @@
       }
       console.log('Login Event', user, Auth.user);  // DEBUG
     });
+
     return Auth;
   });
 
