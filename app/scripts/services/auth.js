@@ -2,26 +2,22 @@
 
   'use strict';
 
-  app.factory('Auth', function($firebaseAuth, FIREBASE_URL, $rootScope) {
+  app.service('Auth', function($firebaseAuth, $firebase, FIREBASE_URL, $rootScope, md5) {
     var ref = new Firebase(FIREBASE_URL);
     var auth = $firebaseAuth(ref);
 
     var Auth = {
       register: function(user) {
-        console.log('Register', user);
         return auth.$createUser(user.email, user.password);
       },
-
-      // TODO: update to the latest API
-      //createProfile: function(user) {
-      //  var profile = {
-      //    username: user.username,
-      //    md5Hash: user.md5Hash
-      //  };
-      //  var profileRef = $firebase(ref.child('profile'));
-      //  return profileRef.$set(user.uid, profile);
-      //},
-
+      createProfile: function(user) {
+        var profile = {
+          username: user.username,
+          md5Hash: md5.createHash(user.email)
+        };
+        var profileRef = $firebase(ref.child('profile'));
+        return profileRef.$set(user.uid, profile);
+      },
       login: function(user) {
         console.log('Login', user);
         return auth.$authWithPassword(user);
