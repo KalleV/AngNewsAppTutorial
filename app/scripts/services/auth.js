@@ -20,7 +20,7 @@
         return profileRef.$set(user.uid, profile);
       },
       login: function(user) {
-        console.log('Login', user);
+        console.log('Login', user);  // DBEUG
         return auth.$authWithPassword(user);
       },
       logout: function() {
@@ -48,15 +48,6 @@
         }
       }
       console.log('Login Event', user, Auth.user);  // DEBUG
-    });
-
-    $rootScope.$on('$firebaseAuth:login', function(event, user) {
-      console.log('logged in');
-      angular.copy(user, Auth.user);
-    });
-    $rootScope.$on('$firebaseAuth:logout', function() {
-      console.log('logged out');
-      angular.copy({}, Auth.user);
     });
     return Auth;
   });
