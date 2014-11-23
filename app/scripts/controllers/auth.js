@@ -23,7 +23,7 @@
 
   /*
    * @description The register method attempts to create a new user,
-   * log them in, and then save a profile within the Firebase data store.
+   * log them in, and then save the user's profile within the Firebase data store.
    * If the registration fails, an error message is displayed to the user.
    */
   AuthCtrl.prototype.register = function () {
@@ -32,7 +32,6 @@
       console.log('user created successfully!');
       return self.auth.login(self.user).then(function (authData) {
         self.user.uid = authData.uid;
-        console.log('USER:', self.user);
         return self.auth.createProfile(self.user).then(function () {
           console.log('Profile created for user', self.user);
           self.location.path(self.rootPath);

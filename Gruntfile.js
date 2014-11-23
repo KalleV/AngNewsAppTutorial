@@ -30,7 +30,7 @@ module.exports = function (grunt) {
     // Watches files for changes and runs tasks based on the changed files
     watch: {
       karma: {
-        files: ['scripts/**/*.js', 'test/unit/*.js', 'test/spec/**/*.js'],
+        files: ['scripts/**/*.js', 'test/unit/*.js'],
         tasks: ['karma:unit:run']
       },
       bower: {
