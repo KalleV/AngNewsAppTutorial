@@ -37,6 +37,9 @@ var app = angular.module('angNewsApp', [
         controller: 'AuthCtrl',
         resolve: {
           user: function(Auth) {
+            console.log('Route Provider Auth current user',
+              Auth.currentUser()
+            );
             return Auth.currentUser();
           }
         }
@@ -45,7 +48,7 @@ var app = angular.module('angNewsApp', [
         templateUrl: 'views/register.html',
         controllerAs: 'authCtrl',
         controller: 'AuthCtrl',
-        resolve: {  // injects the currently signed in user to the controller
+        resolve: {  // inject the currently signed in user to the controller
           user: function(Auth) {
 
             console.log('Route Provider Auth current user',

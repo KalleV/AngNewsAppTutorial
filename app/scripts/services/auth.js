@@ -5,6 +5,7 @@
   app.service('Auth', function($firebaseAuth, $firebase, FIREBASE_URL, $rootScope, md5) {
     var ref = new Firebase(FIREBASE_URL);
     var auth = $firebaseAuth(ref);
+    var emptyUser = {email: '', password: ''};
 
     var Auth = {
       register: function(user) {
@@ -26,13 +27,28 @@
         auth.$unauth();
       },
       currentUser: function() {
-        return this.user;
+        return auth.$getAuth() || emptyUser;
       },
       signedIn: function() {
-        return auth.$getAuth();
+        return !!auth.$getAuth();
       },
-      user: {email: '', password: ''}
+      user: emptyUser
     };
+
+    auth.$onAuth(function(user) {
+      if (user) {  // user is logged in
+        angular.copy(user, Auth.user);
+        Auth.user.profile = $firebase(ref.child('profile').child(Auth.user.uid)).$asObject();
+      } else {     // user is logged out
+        if (Auth.user && Auth.user.profile) {
+          Auth.user.profile.$destroy();
+        }
+        if (!angular.equals(emptyUser, Auth.user)) {
+          angular.copy(emptyUser, Auth.user);
+        }
+      }
+      console.log('Login Event', user, Auth.user);  // DEBUG
+    });
 
     $rootScope.$on('$firebaseAuth:login', function(event, user) {
       console.log('logged in');
