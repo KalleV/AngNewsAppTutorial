@@ -18,7 +18,8 @@ var app = angular.module('angNewsApp', [
     'ngRoute',
     'ngSanitize',
     'ngTouch',
-    'firebase'
+    'firebase',
+    'angular-md5'
 ])
   .config(function($routeProvider) {
     $routeProvider
