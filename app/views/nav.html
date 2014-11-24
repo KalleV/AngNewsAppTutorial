@@ -24,6 +24,13 @@
         <p class="navbar-text">{{navCtrl.user.profile.username}}</p>
       </li>
       <li ng-show="navCtrl.signedIn()">
+        <a ng-href="#/users/{{navCtrl.user.profile.uid}}">
+          <img ng-src="http://www.gravatar.com/avatar/{{navCtrl.user.profile.md5Hash}}"
+               class="nav-pic"/>
+          {{navCtrl.currentUser.username}}
+        </a>
+      </li>
+      <li ng-show="navCtrl.signedIn()">
         <a ng-click="navCtrl.logout()">Logout</a>
       </li>
       <li ng-hide="navCtrl.signedIn()">
