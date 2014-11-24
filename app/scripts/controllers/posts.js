@@ -9,6 +9,9 @@
     this.deletePost = function (post) {
       Post.delete(post);
     };
+    this.sameUser = function(post) {
+      return this.user.uid === post.creatorUID;
+    }
   });
 
 })();
