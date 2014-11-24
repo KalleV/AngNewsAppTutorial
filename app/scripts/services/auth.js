@@ -38,16 +38,14 @@
       if (user) {  // user is logged in
         angular.copy(user, Auth.user);
         Auth.user.profile = $firebase(ref.child('profile').child(Auth.user.uid)).$asObject();
-
-        console.log('Login Event', user, Auth.user);  // DEBUG
       } else {     // user is logged out
         if (Auth.user && Auth.user.profile) {
           Auth.user.profile.$destroy();
         }
+        emptyUser = {email: '', password: ''};
         if (!angular.equals(emptyUser, Auth.user)) {
           angular.copy(emptyUser, Auth.user);
         }
-        console.log('Logout Event', user, Auth.user, emptyUser);  // DEBUG
       }
     });
 

@@ -2,16 +2,22 @@
 
   'use strict';
 
-  app.controller('PostsCtrl', function ($location, Post, Auth) {
+  function PostsCtrl($location, Post, Auth) {
+    this.authService = Auth;
+    this.postService = Post;
     this.posts = Post.all;
     this.user = Auth.user;
     this.post = {url: 'http://', title: ''};
-    this.deletePost = function (post) {
-      Post.delete(post);
-    };
-    this.sameUser = function(post) {
-      return this.user.uid === post.creatorUID;
-    }
-  });
+  }
+
+  PostsCtrl.prototype.deletePost = function(post) {
+    this.postService.delete(post);
+  };
+
+  PostsCtrl.prototype.postAuthor = function(post) {
+    return this.user.uid === post.creatorUID;
+  };
+
+  app.controller('PostsCtrl', PostsCtrl);
 
 })();

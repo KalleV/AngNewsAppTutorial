@@ -3,7 +3,7 @@
   // https://radiant-fire-943.firebaseio.com/
   'use strict';
 
-  app.factory('Post', function Post($firebase, FIREBASE_URL) {
+  app.service('Post', function Post($firebase, FIREBASE_URL) {
     var ref = new Firebase(FIREBASE_URL);
     var posts = $firebase(ref.child('posts')).$asArray();
 
