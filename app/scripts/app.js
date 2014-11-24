@@ -29,7 +29,8 @@ var app = angular.module('angNewsApp', [
       })
       .when('/posts/:postId', {
         templateUrl: 'views/showpost.html',
-        controller: 'PostViewCtrl'
+        controller: 'PostViewCtrl',
+        controllerAs: 'postViewCtrl'
       })
       .when('/login', {
         templateUrl: 'views/login.html',

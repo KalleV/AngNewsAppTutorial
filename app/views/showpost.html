@@ -1,4 +1,28 @@
-<div ng-controller="PostViewCtrl as postViewCtrl">
+<div class="container posts-page">
+
+  <div class="post row">
+    <div class="col-xs-1">
+    </div>
+    <div class="col-md-9 col-xs-11">
+      <div class="info">
+        <a ng-href="{{postViewCtrl.post.url}}">
+          {{postViewCtrl.post.title}}
+          <span class="url">({{postViewCtrl.post.url | hostnameFromUrl}})</span>
+        </a>
+      </div>
+      <div>
+        <span>
+          submitted by
+          <a ng-href="#/users/{{postViewCtrl.post.creatorUID}}">
+            {{post.creator}}
+          </a>
+        </span>
+      </div>
+    </div>
+    <div class="col-md-2">
+    </div>
+  </div>
+
   <div>
     <a ng-href="{{postViewCtrl.post.url}}">{{postViewCtrl.post.title}}</a>
   </div>
