@@ -1,5 +1,5 @@
-<div class="container posts-page" ng-controller="PostsCtrl as postCtrl">
-  <div class="post row" ng-repeat="post in postCtrl.posts">
+<div class="container posts-page" ng-controller="PostsCtrl as postsCtrl">
+  <div class="post row" ng-repeat="post in postsCtrl.posts">
     <div class="col-xs-1"></div>
     <div class="col-md-9 col-xs-11">
 
@@ -14,7 +14,8 @@
         <span>submitted by <a ng-href="#/users/{{post.creatorUID}}">{{post.creator}}</a></span>
         &mdash;
         <a ng-href="#/posts/{{post.$id}}">comments</a>
-        <a ng-click="postCtrl.deletePost(post)">delete</a>
+        <a ng-click="postCtrl.deletePost(post)"
+           ng-show="postsCtrl.user.uid === post.creatorUID">delete</a>
       </div>
     </div>
   </div>
