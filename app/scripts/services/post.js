@@ -8,7 +8,11 @@ app.factory('Post', function Post($firebase, FIREBASE_URL) {
   return {
     all: posts,
     create: function(post) {
-      return posts.$add(post);
+      return posts.$add(post).then(function(postRef) {
+        $firebase(ref.child('user_posts').child(post.creatorUID))
+          .$push(postRef.key());
+        return postRef;
+      });
     },
     get: function(postId) {
       return $firebase(ref.child('posts').child(postId)).$asObject();
