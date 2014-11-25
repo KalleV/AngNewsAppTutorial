@@ -25,12 +25,17 @@ var app = angular.module('angNewsApp', [
     $routeProvider
       .when('/', {
         templateUrl: 'views/posts.html',
-        controller: 'PostsCtrl'
+        controller: 'PostsCtrl',
+        controllerAs: 'postsCtrl'
       })
       .when('/posts/:postId', {
         templateUrl: 'views/showpost.html',
         controller: 'PostViewCtrl',
         controllerAs: 'postViewCtrl'
+      })
+      .when('/users/:userId', {
+        templateUrl: 'views/profile.html',
+        controller: 'ProfileCtrl'
       })
       .when('/login', {
         templateUrl: 'views/login.html',

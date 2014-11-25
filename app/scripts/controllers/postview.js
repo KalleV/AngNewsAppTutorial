@@ -1,4 +1,4 @@
-(function() {
+(function(){
 
   'use strict';
 
@@ -21,6 +21,10 @@
     };
     this.comments.$add(comment);
     this.commentText = '';
+  };
+
+  PostViewCtrl.prototype.deleteComment = function(comment) {
+    this.comments.$remove(comment);
   };
 
   app.controller('PostViewCtrl', PostViewCtrl);
