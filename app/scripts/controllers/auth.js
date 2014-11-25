@@ -12,9 +12,9 @@
     }
   }
 
-  AuthCtrl.prototype.login = function () {
+  AuthCtrl.prototype.login = function() {
     var self = this;
-    this.auth.login(this.user).then(function () {
+    this.auth.login(this.user).then(function() {
       self.location.path(self.rootPath);
     }).catch(function (error) {
       self.error = error.toString();
@@ -26,13 +26,13 @@
    * log them in, and then save the user's profile within the Firebase data store.
    * If the registration fails, an error message is displayed to the user.
    */
-  AuthCtrl.prototype.register = function () {
+  AuthCtrl.prototype.register = function() {
     var self = this;
-    this.auth.register(this.user).then(function () {
+    this.auth.register(this.user).then(function() {
       console.log('user created successfully!');
-      return self.auth.login(self.user).then(function (authData) {
+      return self.auth.login(self.user).then(function(authData) {
         self.user.uid = authData.uid;
-        return self.auth.createProfile(self.user).then(function () {
+        return self.auth.createProfile(self.user).then(function() {
           console.log('Profile created for user', self.user);
           self.location.path(self.rootPath);
         });

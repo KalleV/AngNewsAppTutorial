@@ -27,6 +27,7 @@ var app = angular.module('angNewsApp', [
         templateUrl: 'views/posts.html',
         controller: 'PostsCtrl'
       })
+<<<<<<< HEAD
       .when('/posts/:postId', {
         templateUrl: 'views/showpost.html',
         controller: 'PostViewCtrl'
@@ -59,6 +60,42 @@ var app = angular.module('angNewsApp', [
           }
         }
       })
+||||||| merged common ancestors
+=======
+      .when('/posts/:postId', {
+        templateUrl: 'views/showpost.html',
+        controller: 'PostViewCtrl',
+        controllerAs: 'postViewCtrl'
+      })
+      .when('/login', {
+        templateUrl: 'views/login.html',
+        controllerAs: 'authCtrl',
+        controller: 'AuthCtrl',
+        resolve: {
+          user: function(Auth) {
+            console.log('Route Provider Auth current user',
+              Auth.currentUser()
+            );
+            return Auth.currentUser();
+          }
+        }
+      })
+      .when('/register', {
+        templateUrl: 'views/register.html',
+        controllerAs: 'authCtrl',
+        controller: 'AuthCtrl',
+        resolve: {  // inject the currently signed in user to the controller
+          user: function(Auth) {
+
+            console.log('Route Provider Auth current user',
+                        Auth.currentUser()
+            );
+
+            return Auth.currentUser();
+          }
+        }
+      })
+>>>>>>> 892573e4609ffa81124556f1435c870038b823cc
       .otherwise({
         redirectTo: '/'
       });

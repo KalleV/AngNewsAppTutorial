@@ -42,11 +42,11 @@
         if (Auth.user && Auth.user.profile) {
           Auth.user.profile.$destroy();
         }
+        emptyUser = {email: '', password: ''};
         if (!angular.equals(emptyUser, Auth.user)) {
           angular.copy(emptyUser, Auth.user);
         }
       }
-      console.log('Login Event', user, Auth.user);  // DEBUG
     });
 
     return Auth;

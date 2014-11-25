@@ -6,22 +6,23 @@
     return {
       restrict: 'E',
       templateUrl: 'views/nav.html',
-      controller: function ($location, Post, Auth) {
-        var vm = this;
-
+      controller: function NavCtrl($location, Post, Auth) {
+        var self = this;
         this.signedIn = Auth.signedIn;
         this.logout = Auth.logout;
         this.post = {url: 'http://', title: ''};
         this.user = Auth.user;
 
-        this.submitPost = function () {
-          Post.create(vm.post).then(function (ref) {
+        this.submitPost = function() {
+          self.post.creator = self.user.profile.username;
+          self.post.creatorUID = self.user.uid;
+          Post.create(self.post).then(function (ref) {
             $location.path('/posts/' + ref.key());
-            vm.post = {url: 'http://', 'title': ''};
+            self.post = {url: 'http://', 'title': ''};
           });
         };
 
-        this.register = function () {
+        this.register = function() {
           $location.path('/register');
         };
       },

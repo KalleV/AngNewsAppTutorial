@@ -1,9 +1,22 @@
-'use strict';
+(function(){
 
-app.controller('PostsCtrl', function($location, Post) {
-  this.posts = Post.all;
-  this.post = {url: 'http://', title: ''};
-  this.deletePost = function(post) {
-    Post.delete(post);
+  'use strict';
+
+  function PostsCtrl($location, Post, Auth) {
+    this.postService = Post;
+    this.posts = Post.all;
+    this.user = Auth.user;
+    this.post = {url: 'http://', title: ''};
+  }
+
+  PostsCtrl.prototype.deletePost = function(post) {
+    this.postService.delete(post);
   };
-});
+
+  PostsCtrl.prototype.postAuthor = function(post) {
+    return this.user.uid === post.creatorUID;
+  };
+
+  app.controller('PostsCtrl', PostsCtrl);
+
+})();
