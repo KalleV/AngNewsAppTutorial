@@ -35,7 +35,8 @@ var app = angular.module('angNewsApp', [
       })
       .when('/users/:userId', {
         templateUrl: 'views/profile.html',
-        controller: 'ProfileCtrl'
+        controller: 'ProfileCtrl',
+        controllerAs: 'profileCtrl'
       })
       .when('/login', {
         templateUrl: 'views/login.html',

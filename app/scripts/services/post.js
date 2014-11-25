@@ -22,9 +22,20 @@
       get: function(postId) {
         return $firebase(ref.child('posts').child(postId)).$asObject();
       },
-      // TODO: remove the post from user_posts in the data store too
       delete: function(post) {
-        //$firebase(ref.child('user_posts')).$remove(post.$id);
+        // Remove all comments linked to the post
+        $firebase(ref.child('comments').child(post.$id)).$remove();
+
+        // Remove the secondary id linked to the post
+        var userPosts = $firebase(ref.child('user_posts').child(post.creatorUID));
+        userPosts.$asArray().$loaded().then(function(data) {
+            data.$remove(data.$indexFor(post.$id));
+            for (var i = 0; i < data.length; i++) {
+              if (data[i].$value === post.$id) {
+                data.$remove(i);
+              }
+            }
+          });
         return posts.$remove(post);
       }
     };
