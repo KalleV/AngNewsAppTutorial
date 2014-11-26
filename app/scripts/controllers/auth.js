@@ -14,7 +14,6 @@
 
   AuthCtrl.prototype.login = function() {
     var self = this;
-    console.log(this.auth.login(this.user));
     this.auth.login(this.user).then(function() {
       self.location.path(self.rootPath);
     }).catch(function (error) {

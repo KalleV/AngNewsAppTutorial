@@ -13,7 +13,8 @@
           AuthMock,
           deferred,
           user,
-          ctrl;
+          ctrl,
+          loginError;
 
       beforeEach(module('angNewsApp'));
 
@@ -35,6 +36,7 @@
         $rootScope = _$rootScope_;
         $q = _$q_;
 
+        loginError = 'Error: Failed to log in';
         user = {email: 'email@example.com', password: '123'};
         ctrl = $controller('AuthCtrl', {$location: $location, Auth: AuthMock, user: user});
       }));
@@ -42,7 +44,7 @@
       it('redirects to the root path for signed in users when the controller is constructed', function() {
         expect($location.path()).toBe('');
         spyOn(AuthMock, 'signedIn').and.returnValue(true);
-        // construct a new, local controller in order to test the constructor's redirect
+        // construct a new controller in order to test the constructor's redirect
         var ctrl = $controller('AuthCtrl', {$location: $location, Auth: AuthMock, user: user});
         expect($location.path()).toBe(ctrl.rootPath);
       });
@@ -68,20 +70,20 @@
         expect($location.path()).toBe('');
         spyOn(AuthMock, 'login').and.callThrough();
         ctrl.login();
-        deferred.reject();
+        deferred.reject(loginError);
+        $rootScope.$apply();
         expect(AuthMock.login).toHaveBeenCalledWith(user);
         expect($location.path()).toBe('');
       });
 
       it('creates an error message if the user fails to log in', function() {
-        var errorString = 'Error: Failed to log in';
         expect(ctrl.error).toBeUndefined();
         spyOn(AuthMock, 'login').and.callThrough();
         ctrl.login();
-        deferred.reject(errorString);
+        deferred.reject(loginError);
         $rootScope.$apply();
         expect(ctrl.error).toBeDefined();
-        expect(ctrl.error).toEqual(errorString);
+        expect(ctrl.error).toEqual(loginError);
       });
 
     });
