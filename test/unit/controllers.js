@@ -7,46 +7,81 @@
     describe('AuthCtrl', function () {
 
       var $location,
-        $q,
-        Auth,
-        user,
-        ctrl;
+          $q,
+          $rootScope,
+          $controller,
+          AuthMock,
+          deferred,
+          user,
+          ctrl;
 
       beforeEach(module('angNewsApp'));
-      //beforeEach(angular.mock.module('angNewsApp'));
 
-      beforeEach(inject(function (_$location_, _Auth_, $controller, _$q_) {
-        // mock the services
+      beforeEach(function() {
+        AuthMock = {
+          login: function(user) {
+            deferred = $q.defer();
+            return deferred.promise;
+          },
+          signedIn: function() {
+            return false;
+          }
+        }
+      });
+
+      beforeEach(inject(function (_$location_, _$controller_, _$rootScope_, _$q_) {
         $location = _$location_;
-        Auth = _Auth_;
+        $controller = _$controller_;
+        $rootScope = _$rootScope_;
         $q = _$q_;
 
-        //Auth.login = function (user) {
-        //  var deferred = $q.defer();
-        //  return deferred.promise();
-        //};
-
         user = {email: 'email@example.com', password: '123'};
-        ctrl = $controller('AuthCtrl', {$location: $location, Auth: Auth, user: user});
+        ctrl = $controller('AuthCtrl', {$location: $location, Auth: AuthMock, user: user});
       }));
 
-      //it('redirects to the root path if the user is signed in when the controller is constructed', function() {
-      //});
+      it('redirects to the root path for signed in users when the controller is constructed', function() {
+        expect($location.path()).toBe('');
+        spyOn(AuthMock, 'signedIn').and.returnValue(true);
+        // construct a new, local controller in order to test the constructor's redirect
+        var ctrl = $controller('AuthCtrl', {$location: $location, Auth: AuthMock, user: user});
+        expect($location.path()).toBe(ctrl.rootPath);
+      });
+
+      it('does not redirect to the root path for logged out users when the controller is constructed', function() {
+        expect($location.path()).toBe('');
+        spyOn(AuthMock, 'signedIn').and.returnValue(false);
+        var ctrl = $controller('AuthCtrl', {$location: $location, Auth: AuthMock, user: user});
+        expect($location.path()).toBe('');
+      });
 
       it('redirects to the root path if the user successfully logs in', function() {
-        // Auth login returns a promise '$$state' object with a status of 1 on
-        // success and a value of an Object with data such as the provider.
-        spyOn(Auth, 'login').and.callFake(function() {
-          var deferred = $q.defer();
-          return deferred.promise;
-        });
-        //spyOn(ctrl.location, 'path').and.callFake(function(newPath) {
-        //  return '/';
-        //});
+        expect($location.path()).toBe('');
+        spyOn(AuthMock, 'login').and.callThrough();
         ctrl.login();
-        expect(Auth.login).toHaveBeenCalled();
-        //expect(ctrl.location.path).toHaveBeenCalled();
-        expect(ctrl.rootPath).toEqual('/');
+        deferred.resolve();
+        $rootScope.$apply();  // apply the changes to the scope
+        expect(AuthMock.login).toHaveBeenCalledWith(user);
+        expect($location.path()).toBe(ctrl.rootPath);
+      });
+
+      it('does not redirect to the root path if the user fails to log in', function() {
+        expect($location.path()).toBe('');
+        spyOn(AuthMock, 'login').and.callThrough();
+        ctrl.login();
+        deferred.reject();
+        expect(AuthMock.login).toHaveBeenCalledWith(user);
+        expect($location.path()).toBe('');
+      });
+
+      it('creates an error message if the user fails to log in', function() {
+        var errorString = 'Error: Failed to log in';
+        expect(ctrl.error).toBeUndefined();
+        spyOn(AuthMock, 'login').and.callThrough();
+        ctrl.login();
+        deferred.reject(errorString);
+        $rootScope.$apply();
+        expect(ctrl.error).toBeDefined();
+        expect(ctrl.error).toEqual(errorString);
       });
 
     });
