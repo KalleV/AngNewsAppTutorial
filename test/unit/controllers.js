@@ -26,6 +26,10 @@
           },
           signedIn: function() {
             return false;
+          },
+          register: function(user) {
+            deferred = $q.defer();
+            return deferred.promise;
           }
         }
       });
@@ -41,8 +45,13 @@
         ctrl = $controller('AuthCtrl', {$location: $location, Auth: AuthMock, user: user});
       }));
 
-      it('redirects to the root path for signed in users when the controller is constructed', function() {
+
+      // AuthCtrl constructor tests
+      it('has an empty current url when the user is not signed in', function() {
         expect($location.path()).toBe('');
+      });
+
+      it('redirects to the root path for signed in users when the controller is constructed', function() {
         spyOn(AuthMock, 'signedIn').and.returnValue(true);
         // construct a new controller in order to test the constructor's redirect
         var ctrl = $controller('AuthCtrl', {$location: $location, Auth: AuthMock, user: user});
@@ -50,14 +59,13 @@
       });
 
       it('does not redirect to the root path for logged out users when the controller is constructed', function() {
-        expect($location.path()).toBe('');
         spyOn(AuthMock, 'signedIn').and.returnValue(false);
         var ctrl = $controller('AuthCtrl', {$location: $location, Auth: AuthMock, user: user});
         expect($location.path()).toBe('');
       });
 
+      // AuthCtrl login tests
       it('redirects to the root path if the user successfully logs in', function() {
-        expect($location.path()).toBe('');
         spyOn(AuthMock, 'login').and.callThrough();
         ctrl.login();
         deferred.resolve();
@@ -67,7 +75,6 @@
       });
 
       it('does not redirect to the root path if the user fails to log in', function() {
-        expect($location.path()).toBe('');
         spyOn(AuthMock, 'login').and.callThrough();
         ctrl.login();
         deferred.reject(loginError);
@@ -85,6 +92,8 @@
         expect(ctrl.error).toBeDefined();
         expect(ctrl.error).toEqual(loginError);
       });
+
+      // AuthCtrl register tests
 
     });
 
