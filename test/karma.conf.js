@@ -27,6 +27,7 @@ module.exports = function(config) {
       'bower_components/angular-sanitize/angular-sanitize.js',
       'bower_components/angular-touch/angular-touch.js',
       'bower_components/angularfire/dist/angularfire.js',
+      'bower_components/angular-md5/angular-md5.js',
       'bower_components/firebase/firebase.js',
       'app/scripts/**/*.js',
       'test/unit/**/*.js',
@@ -74,11 +75,11 @@ module.exports = function(config) {
       outputFile: 'test_out/unit.xml',
       suite: 'unit'
     }
-    // Uncomment the following lines if you are using grunt's server to run the tests
-    // proxies: {
+    //// Uncomment the following lines if you are using grunt's server to run the tests
+    //proxies: {
     //   '/': 'http://localhost:9000/'
-    // },
-    // URL root prevent conflicts with the site root
-    // urlRoot: '_karma_'
+    //},
+    //// URL root prevent conflicts with the site root
+    //urlRoot: '_karma_'
   });
 };

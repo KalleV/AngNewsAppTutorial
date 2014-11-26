@@ -1,57 +1,56 @@
-'use strict';
+(function() {
 
-describe('angNewsApp controllers', function() {
+  'use strict';
 
-  describe('AuthCtrl', function() {
+  describe('angNewsApp controllers', function () {
 
-    var $location,
+    describe('AuthCtrl', function () {
+
+      var $location,
+        $q,
         Auth,
         user,
         ctrl;
 
-    beforeEach(module('angNewsApp'));
+      beforeEach(module('angNewsApp'));
+      //beforeEach(angular.mock.module('angNewsApp'));
 
-    beforeEach(inject(function (_$location_, Auth, user, $controller, $q) {
-      // mock the services
-      $location = _$location_;
-      Auth = _Auth_;
-    //
-    //  Auth.login = function(user) {
-    //    var deferred = $q.defer();
-    //    var success = {$$state: {status: 0}};
-    //    deferred.resolve(success);
-    //    return deferred.promise();
-    //  };
-    //
-    //  user = {email: 'email@example.com', password: '123'};
-    //  //spyOn(Auth, 'login').andReturn(
-    //  //  $q.when({
-    //  //  })
-    //  //);
-    //
-    //  // ($location, Auth, user)
-    //  ctrl = $controller(AuthCtrl, {$location: $location, Auth: Auth, user: user});
-    //
-    }));
+      beforeEach(inject(function (_$location_, _Auth_, $controller, _$q_) {
+        // mock the services
+        $location = _$location_;
+        Auth = _Auth_;
+        $q = _$q_;
 
-    //it('redirects to the root path if the user is signed in when the controller is constructed', function() {
-    //});
+        //Auth.login = function (user) {
+        //  var deferred = $q.defer();
+        //  return deferred.promise();
+        //};
 
-    it('redirects to the root path if the user successfully logs in', function() {
-      //ctrl.login(user);
-      //expect(ctrl.location.path).toHaveBeenCalled();
+        user = {email: 'email@example.com', password: '123'};
+        ctrl = $controller('AuthCtrl', {$location: $location, Auth: Auth, user: user});
+      }));
+
+      //it('redirects to the root path if the user is signed in when the controller is constructed', function() {
+      //});
+
+      it('redirects to the root path if the user successfully logs in', function() {
+        // Auth login returns a promise '$$state' object with a status of 1 on
+        // success and a value of an Object with data such as the provider.
+        spyOn(Auth, 'login').and.callFake(function() {
+          var deferred = $q.defer();
+          return deferred.promise;
+        });
+        //spyOn(ctrl.location, 'path').and.callFake(function(newPath) {
+        //  return '/';
+        //});
+        ctrl.login();
+        expect(Auth.login).toHaveBeenCalled();
+        //expect(ctrl.location.path).toHaveBeenCalled();
+        expect(ctrl.rootPath).toEqual('/');
+      });
+
     });
-
-//    ($location, Auth, user)
-//    AuthCtrl.prototype.login = function() {
-//      var self = this;
-//      this.auth.login(this.user).then(function() {
-//        self.location.path(self.rootPath);
-//      }).catch(function (error) {
-//        self.error = error.toString();
-//      });
-//    };
 
   });
 
-});
+})();
