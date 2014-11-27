@@ -28,18 +28,22 @@
    */
   AuthCtrl.prototype.register = function() {
     var self = this;
-    this.auth.register(this.user).then(function() {
-      console.log('user created successfully!');
-      return self.auth.login(self.user).then(function(authData) {
-        self.user.uid = authData.uid;
-        return self.auth.createProfile(self.user).then(function() {
-          console.log('Profile created for user', self.user);
-          self.location.path(self.rootPath);
-        });
+    this.auth.register(this.user)
+      .then(function() {
+        console.log('user registered successfully!');  // DEBUG
+        return self.auth.login(self.user)
+          .then(function(authData) {
+            console.log('user logged in successfully');
+            self.user.uid = authData.uid;
+            return self.auth.createProfile(self.user)
+              .then(function() {
+                console.log('Profile created for user', self.user);  // DEBUG
+                self.location.path(self.rootPath);
+              });
+          });
+      }).catch(function (error) {
+        self.error = error.toString();
       });
-    }).catch(function (error) {
-      self.error = error.toString();
-    });
   };
 
   app.controller('AuthCtrl', AuthCtrl);
