@@ -4,6 +4,111 @@
 
   describe('angNewsApp controllers', function() {
 
+    describe('PostViewCtrl', function() {
+
+      var firebaseArrayMock,
+          AuthMock,
+          PostMock,
+          postViewCtrlMock,
+          $controller,
+          routeParamsMock;
+
+      var post = {
+        $id: '-rj15aBrMn49C-e',
+        title: 'A title',
+        url: 'A url'
+      };
+
+      var user = {
+        email: 'email@example.com',
+        password: '123',
+        uid: 123456,
+        profile: {
+          username: 'Jeb Smith'
+        }
+      };
+
+      beforeEach(module('angNewsApp'));
+
+      beforeEach(function() {
+        firebaseArrayMock = function() {
+          this.data = [];
+          this.$add = function(item) { };
+          this.$remove = function(item) { };
+        };
+
+        PostMock = {
+          get: function(postId) {
+            return post;
+          },
+          comments: function(postId) {
+            return new firebaseArrayMock();
+          }
+        };
+
+        AuthMock = {
+          user: user,
+          signedIn: function() {
+            return true;
+          }
+        };
+
+        routeParamsMock = {
+          postId: 12345679
+        };
+      });
+
+      beforeEach(inject(function(_$controller_) {
+        $controller = _$controller_;
+        postViewCtrlMock = $controller('PostViewCtrl', {
+            $routeParams: routeParamsMock,
+            Post: PostMock,
+            Auth: AuthMock
+        });
+      }));
+
+      it('it retrieves a post and a list of comments if they exist', function() {
+        expect(postViewCtrlMock.post).toBeDefined();
+        expect(postViewCtrlMock.comments).toBeDefined();
+      });
+
+      it('does not store empty comments or undefined comments', function() {
+        spyOn(postViewCtrlMock.comments, '$add');
+        postViewCtrlMock.commentText = '';
+        postViewCtrlMock.addComment();
+        postViewCtrlMock.commentText = undefined;
+        postViewCtrlMock.addComment();
+
+        expect(postViewCtrlMock.comments.$add).not.toHaveBeenCalled();
+      });
+
+      it('calls $add when adding non-empty comments', function() {
+        spyOn(postViewCtrlMock.comments, '$add');
+        postViewCtrlMock.commentText = 'First!';
+        postViewCtrlMock.addComment();
+
+        expect(postViewCtrlMock.comments.$add).toHaveBeenCalled();
+        expect(postViewCtrlMock.commentText).toBe('');
+      });
+
+      it('calls $remove when deleting a comment', function() {
+        spyOn(postViewCtrlMock.comments, '$remove');
+        postViewCtrlMock.commentText = 'First!';
+        postViewCtrlMock.user.profile.username = 'JimSmith';
+        postViewCtrlMock.user.uid = 12345;
+        postViewCtrlMock.addComment();
+        var comment = {
+          text: 'First!',
+          creator: AuthMock.user.profile.username,
+          creatorUID: AuthMock.user.uid
+        };
+        postViewCtrlMock.deleteComment(comment);
+
+        expect(postViewCtrlMock.comments.$remove).toHaveBeenCalledWith(comment);
+      });
+
+    });
+
     describe('AuthCtrl', function() {
 
       var $location,
@@ -44,7 +149,7 @@
         }
       });
 
-      beforeEach(inject(function (_$location_, _$controller_, _$rootScope_, _$q_) {
+      beforeEach(inject(function(_$location_, _$controller_, _$rootScope_, _$q_) {
         $location = _$location_;
         $controller = _$controller_;
         $rootScope = _$rootScope_;
@@ -71,7 +176,7 @@
 
         it('does not redirect to the root path for logged out users when the controller is constructed', function () {
           spyOn(AuthMock, 'signedIn').and.returnValue(false);
-          var ctrl = $controller('AuthCtrl', {$location: $location, Auth: AuthMock, user: user});
+          $controller('AuthCtrl', {$location: $location, Auth: AuthMock, user: user});
           expect($location.path()).toBe('');
         });
 
@@ -86,7 +191,7 @@
         it('redirects to the root path if the user successfully logs in', function() {
           ctrl.login();
           loginDeferred.resolve();
-          $rootScope.$apply();  // apply the changes to the scope
+          $rootScope.$apply();
 
           expect(AuthMock.login).toHaveBeenCalledWith(user);
           expect($location.path()).toBe(ctrl.rootPath);
